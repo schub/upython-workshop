@@ -30,7 +30,7 @@ class Steppermotor:
                 self.pins[i].value(self.sequence[self.step % 4][i])
                 sleep(0.001)
     
-    def turn(self, steps, speed):
+    def turn_speed(self, steps, speed):
         if steps > 0:
             richtung = -1
         elif steps < 0:
