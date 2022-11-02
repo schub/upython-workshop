@@ -3,26 +3,21 @@ import machine
 import time
 from umqttsimple import MQTTClient
 import ubinascii
+
+# button
+btn = machine.Pin(9, machine.Pin.IN, machine.Pin.PULL_UP)
+counter = 0
+
 import wifi_connect
 
 # mqtt 
 client_id = ubinascii.hexlify(machine.unique_id())
-topic_sub = b'breakdown/schub/in'
-topic_pub = b'breakdown/schub/data'
-topic_welcome = b'breakdown/schub/welcome'
-
-def sub_cb(topic, msg):
-    print("message received")
-    print((topic, msg))
-    
-    print("---")
+topic_pub = b'breakdown/schub/in'
+topic_welcome = b'breakdown/taster/welcome'
 
 def connect_and_subscribe():
     client = MQTTClient(client_id = client_id, server = config.mqtt_host, port = config.mqtt_port)
-    client.set_callback(sub_cb)
     client.connect()
-    client.subscribe(topic_sub)
-    print('Connected to %s MQTT broker, subscribed to %s topic' % (config.mqtt_host, topic_sub))
     return client
 
 def restart_and_reconnect():
@@ -40,7 +35,9 @@ client.publish(topic_welcome, "hello world, I'm here now :)")
 
 
 while True:
-    try:
-        client.check_msg()
-    except OSError as e:
-        restart_and_reconnect()
+    first = btn.value()
+    time.sleep(0.01)
+    second = btn.value()
+    if first and not second:
+        counter += 1
+        client.publish(topic_pub, str(counter))
