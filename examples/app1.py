@@ -1,8 +1,14 @@
 import config
 import machine
 import time
+import tm1637
 from umqttsimple import MQTTClient
 import ubinascii
+
+# display
+seg = tm1637.TM1637(clk=machine.Pin(5), dio=machine.Pin(4))
+seg.number(0)
+
 import wifi_connect
 
 # mqtt 
@@ -14,7 +20,8 @@ topic_welcome = b'breakdown/schub/welcome'
 def sub_cb(topic, msg):
     print("message received")
     print((topic, msg))
-    
+    count = int(msg)
+    seg.number(count)
     print("---")
 
 def connect_and_subscribe():
