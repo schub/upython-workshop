@@ -1,3 +1,5 @@
+# It's nice have you here at the workshop! (Theatermaschine by Markus Schubert and Georg Werner)
+
 from time import sleep
 from machine import UART
 

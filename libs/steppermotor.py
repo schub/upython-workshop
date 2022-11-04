@@ -1,4 +1,4 @@
-
+# It's nice have you here at the workshop! (Theatermaschine by Markus Schubert and Georg Werner)
 
 from machine import Pin
 from time import sleep
